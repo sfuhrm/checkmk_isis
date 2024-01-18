@@ -39,6 +39,7 @@ from .agent_based_api.v1 import (
     State,
 )
 
+import socket
 
 def parse_isis_adjacency(string_table):
     parsed = {}
@@ -49,13 +50,19 @@ def parse_isis_adjacency(string_table):
             adjacency['State'] = int(adj_state)
 
         elif adj_address != '':
+            adj_address_str = socket.inet_ntoa(adj_address)
             if len(adj_address) == 4:
-                adjacency['Neighbor IPv4'] = '.'.join(format(ord(x), 'd') for x in adj_address)
+                adjacency['Neighbor IPv4'] = adj_address_str
+            elif len(adj_address) == 16:
+                adjacency['Neighbor IPv6'] = adj_address_str
             else:
                 continue
 
         if 'State' in adjacency and 'Neighbor IPv4' in adjacency:
             parsed[adjacency['Neighbor IPv4']] = adjacency
+            adjacency = {}
+        elif 'State' in adjacency and 'Neighbor IPv6' in adjacency:
+            parsed[adjacency['Neighbor IPv6']] = adjacency
             adjacency = {}
 
     return parsed
@@ -93,7 +100,11 @@ def check_isis_adjacency(item, section):
         return
 
     state = int(section[item]['State'])
-    address = section[item]['Neighbor IPv4']
+
+    if section[item].get('Neighbor IPv4'):
+        address = section[item]['Neighbor IPv4']
+    else:
+        address = section[item]['Neighbor IPv6']
     summary = 'State with neighbor %s is %s' % (address, ISIS_ADJ_STATE_MAP[state])
 
     if state == 3:
