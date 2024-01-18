@@ -30,7 +30,7 @@ from cmk.base.plugins.agent_based import isis_adjacency
 
 @pytest.mark.parametrize('string_table, result', [
     (
-        [['3', ''], ['', 'À¨\x00\x01'], ['', 'þ\x80\x00\x00\x00\x00\x00\x00\x8c!³\x16}N©Ý'], ['3', ''], ['', '\n\x00\x00\x01'], ['', 'þ\x80\x00\x00\x00\x00\x00\x00C¨¼\x11\x83\x9c\x88,']],
+        [['3', ''], ['', 'À¨\x00\x01'], ['3', ''], ['', 'þ\x80\x00\x00\x00\x00\x00\x00\x8c!³\x16}N©Ý'], ['3', ''], ['', '\n\x00\x00\x01'], ['3', ''], ['', 'þ\x80\x00\x00\x00\x00\x00\x00C¨¼\x11\x83\x9c\x88,']],
         {
             '10.0.0.1': {'Neighbor IPv4': '10.0.0.1', 'State': 3},
             '192.168.0.1': {'Neighbor IPv4': '192.168.0.1', 'State': 3},
