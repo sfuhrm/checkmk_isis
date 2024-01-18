@@ -41,6 +41,7 @@ from .agent_based_api.v1 import (
 
 import ipaddress
 
+
 def parse_isis_adjacency(string_table):
     parsed = {}
     adjacency = {}
