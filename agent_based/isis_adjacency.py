@@ -51,7 +51,8 @@ def parse_isis_adjacency(string_table):
             adjacency['State'] = int(adj_state)
 
         elif adj_address != '':
-            adj_address_str = socket.inet_ntoa(adj_address)
+            adj_address_bytes = bytes([ord(x) for x in adj_address])
+            adj_address_str = socket.inet_ntoa(adj_address_bytes)
             if len(adj_address) == 4:
                 adjacency['Neighbor IPv4'] = adj_address_str
             elif len(adj_address) == 16:
