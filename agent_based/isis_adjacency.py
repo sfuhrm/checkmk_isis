@@ -45,27 +45,27 @@ import ipaddress
 def parse_isis_adjacency(string_table):
     parsed = {}
     adjacency = {}
+    last_state = None
 
     for (adj_state, adj_address) in string_table:
         if adj_state != '':
-            adjacency['State'] = int(adj_state)
+            last_state = int(adj_state)
 
         elif adj_address != '':
             adj_address_bytes = bytes([ord(x) for x in adj_address])
             adj_ip_address = ipaddress.ip_address(adj_address_bytes)
             if len(adj_address) == 4:
                 adjacency['Neighbor IPv4'] = adj_ip_address.compressed
+                adjacency['State'] = last_state
+                parsed[adjacency['Neighbor IPv4']] = adjacency
+                adjacency = {}
             elif len(adj_address) == 16:
                 adjacency['Neighbor IPv6'] = adj_ip_address.compressed
+                adjacency['State'] = last_state
+                parsed[adjacency['Neighbor IPv6']] = adjacency
+                adjacency = {}
             else:
                 continue
-
-        if 'State' in adjacency and 'Neighbor IPv4' in adjacency:
-            parsed[adjacency['Neighbor IPv4']] = adjacency
-            adjacency = {}
-        elif 'State' in adjacency and 'Neighbor IPv6' in adjacency:
-            parsed[adjacency['Neighbor IPv6']] = adjacency
-            adjacency = {}
 
     return parsed
 
