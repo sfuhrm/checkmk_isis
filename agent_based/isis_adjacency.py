@@ -39,8 +39,7 @@ from .agent_based_api.v1 import (
     State,
 )
 
-import socket
-
+import ipaddress
 
 def parse_isis_adjacency(string_table):
     parsed = {}
@@ -52,11 +51,11 @@ def parse_isis_adjacency(string_table):
 
         elif adj_address != '':
             adj_address_bytes = bytes([ord(x) for x in adj_address])
-            adj_address_str = socket.inet_ntoa(adj_address_bytes)
+            adj_ip_address = ipaddress.ip_address(adj_address_bytes)
             if len(adj_address) == 4:
-                adjacency['Neighbor IPv4'] = adj_address_str
+                adjacency['Neighbor IPv4'] = adj_ip_address.compressed
             elif len(adj_address) == 16:
-                adjacency['Neighbor IPv6'] = adj_address_str
+                adjacency['Neighbor IPv6'] = adj_ip_address.compressed
             else:
                 continue
 
