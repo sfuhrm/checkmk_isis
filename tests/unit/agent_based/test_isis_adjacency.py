@@ -46,9 +46,10 @@ def test_parse_isis_adjacency(string_table, result):
     (
         {
             '10.0.0.1': {'Neighbor IPv4': '10.0.0.1', 'State': 3},
-            '192.168.0.1': {'Neighbor IPv4': '192.168.0.1', 'State': 3}
+            '192.168.0.1': {'Neighbor IPv4': '192.168.0.1', 'State': 3},
+            'fe80::8c21:b316:7d4e:a9dd': {'Neighbor IPv6': 'fe80::8c21:b316:7d4e:a9dd', 'State': 3}
         },
-        [Service(item='10.0.0.1'), Service(item='192.168.0.1')]
+        [Service(item='10.0.0.1'), Service(item='192.168.0.1'), Service(item='fe80::8c21:b316:7d4e:a9dd')]
     ),
 ])
 def test_discover_isis_adjacency(section, result):
@@ -62,6 +63,7 @@ def test_discover_isis_adjacency(section, result):
         {
             '10.0.0.1': {'Neighbor IPv4': '10.0.0.1', 'State': 3},
             '192.168.0.1': {'Neighbor IPv4': '192.168.0.1', 'State': 3}
+            'fe80::8c21:b316:7d4e:a9dd': {'Neighbor IPv6': 'fe80::8c21:b316:7d4e:a9dd', 'State': 3}
         },
         []
     ),
@@ -69,7 +71,8 @@ def test_discover_isis_adjacency(section, result):
         '10.0.0.1',
         {
             '10.0.0.1': {'Neighbor IPv4': '10.0.0.1', 'State': 3},
-            '192.168.0.1': {'Neighbor IPv4': '192.168.0.1', 'State': 1}
+            '192.168.0.1': {'Neighbor IPv4': '192.168.0.1', 'State': 1},
+            'fe80::8c21:b316:7d4e:a9dd': {'Neighbor IPv6': 'fe80::8c21:b316:7d4e:a9dd', 'State': 3}
         },
         [Result(state=State.OK, summary='State with neighbor 10.0.0.1 is up')]
     ),
@@ -77,7 +80,8 @@ def test_discover_isis_adjacency(section, result):
         '10.0.0.1',
         {
             '10.0.0.1': {'Neighbor IPv4': '10.0.0.1', 'State': 1},
-            '192.168.0.1': {'Neighbor IPv4': '192.168.0.1', 'State': 3}
+            '192.168.0.1': {'Neighbor IPv4': '192.168.0.1', 'State': 3},
+            'fe80::8c21:b316:7d4e:a9dd': {'Neighbor IPv6': 'fe80::8c21:b316:7d4e:a9dd', 'State': 3}
         },
         [Result(state=State.CRIT, summary='State with neighbor 10.0.0.1 is down')]
     ),
