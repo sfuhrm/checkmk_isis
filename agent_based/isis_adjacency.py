@@ -40,12 +40,18 @@ from .agent_based_api.v1 import (
 )
 
 import ipaddress
+import json
+import time
 
 
 def parse_isis_adjacency(string_table):
     parsed = {}
     adjacency = {}
     last_state = None
+
+    time_str = str(time.time())
+    with open(f"/tmp/isis_{time_str}.json", 'w') as f:
+        json.dump(string_table, f)
 
     for (adj_state, adj_address) in string_table:
         if adj_state != '':
