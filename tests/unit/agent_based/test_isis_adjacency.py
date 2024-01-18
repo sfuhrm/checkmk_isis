@@ -62,7 +62,7 @@ def test_discover_isis_adjacency(section, result):
         'foo',
         {
             '10.0.0.1': {'Neighbor IPv4': '10.0.0.1', 'State': 3},
-            '192.168.0.1': {'Neighbor IPv4': '192.168.0.1', 'State': 3}
+            '192.168.0.1': {'Neighbor IPv4': '192.168.0.1', 'State': 3},
             'fe80::8c21:b316:7d4e:a9dd': {'Neighbor IPv6': 'fe80::8c21:b316:7d4e:a9dd', 'State': 3}
         },
         []
