@@ -54,17 +54,14 @@ def parse_isis_adjacency(string_table):
             adj_address_bytes = bytes([ord(x) for x in adj_address])
             adj_ip_address = ipaddress.ip_address(adj_address_bytes)
             if len(adj_address) == 4:
-                adjacency['Neighbor IPv4'] = adj_ip_address.compressed
+                adjacency['Neighbor IP'] = adj_ip_address.compressed
             elif len(adj_address) == 16:
-                adjacency['Neighbor IPv6'] = adj_ip_address.compressed
+                adjacency['Neighbor IP'] = adj_ip_address.compressed
             else:
                 continue
 
-        if 'State' in adjacency and 'Neighbor IPv4' in adjacency:
-            parsed[adjacency['Neighbor IPv4']] = adjacency
-            adjacency = {}
-        elif 'State' in adjacency and 'Neighbor IPv6' in adjacency:
-            parsed[adjacency['Neighbor IPv6']] = adjacency
+        if 'State' in adjacency and 'Neighbor IP' in adjacency:
+            parsed[adjacency['Neighbor IP']] = adjacency
             adjacency = {}
 
     return parsed
@@ -103,10 +100,8 @@ def check_isis_adjacency(item, section):
 
     state = int(section[item]['State'])
 
-    if section[item].get('Neighbor IPv4'):
-        address = section[item]['Neighbor IPv4']
-    else:
-        address = section[item]['Neighbor IPv6']
+    if section[item].get('Neighbor IP'):
+        address = section[item]['Neighbor IP']
     summary = 'State with neighbor %s is %s' % (address, ISIS_ADJ_STATE_MAP[state])
 
     if state == 3:
